@@ -215,7 +215,7 @@ function initObjModel() {
   var planeInfo = document.createElement('div')
   planeInfo.className = 'the-modal'
   planeInfo.innerHTML = '<div>治电护航直升机</div>' +
-    '<div>ZZES 007</div>'
+    '<div>ZZES 007 </div>'
   planeInfo.classList.add('hide')
   infoModal = new THREE.CSS2DObject(planeInfo)
   scene.add(infoModal)
