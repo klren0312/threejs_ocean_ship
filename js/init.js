@@ -301,7 +301,11 @@ function initAnimate() {
   labelRenderer.render(scene, camera)
   water.material.uniforms[ 'time' ].value += 1.0 / 60.0;
   if (engineerShip) {
-    engineerShip.position.z += 0.5
+    engineerShip.position.z += 0.1
+    if (engineerShip.position.z >= 50) {
+      engineerShip.position.x += 0.01
+      engineerShip.rotation.y += 0.001
+    }
   }
   if (thingsShip) {
     thingsShip.position.z += 0.1
@@ -309,9 +313,6 @@ function initAnimate() {
       thingsShip.position.x += 0.01
       thingsShip.rotation.y += 0.001
     }
-  }
-  if (helicopter) {
-    helicopter.rotation.y += 0.01
   }
   requestAnimationFrame(initAnimate)
 }
