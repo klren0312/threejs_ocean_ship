@@ -11,6 +11,7 @@ var objectArr = [] // 存放场景中所有mesh
 // 提示框
 var infoModal, labelRenderer
 
+var engineerShip, thingsShip, helicopter
 
 // ===============  开启帧数检测 ======================
 function initStats() {
@@ -93,7 +94,7 @@ function initLights() {
   scene.add(spotLight1);
 
   var spotLight2 = new THREE.SpotLight(0xffffff);
-  spotLight2.position.set(150, 500, 0);
+  spotLight2.position.set(550, 500, 0);
   scene.add(spotLight2);
 
   var spotLight3 = new THREE.SpotLight(0xffffff);
@@ -156,6 +157,7 @@ function initObjModel() {
       object.position.y = 0;
       object.scale.set(0.005, 0.005, 0.005);
       object.name = 'engineerShip';
+      engineerShip = object
       scene.add(object);
     }, onProgress, onError);
   });
@@ -171,6 +173,7 @@ function initObjModel() {
       object.position.y = 0;
       object.scale.set(0.2, 0.2, 0.2);
       object.name = 'thingsShip';
+      thingsShip = object
       scene.add(object);
     }, onProgress, onError);
   });
@@ -186,6 +189,7 @@ function initObjModel() {
       object.position.y = 30;
       object.scale.set(100, 100, 100);
       object.name = 'helicopter';
+      helicopter = object
       scene.add(object);
     }, onProgress, onError);
   });
@@ -296,6 +300,19 @@ function initAnimate() {
   renderer.render(scene, camera)
   labelRenderer.render(scene, camera)
   water.material.uniforms[ 'time' ].value += 1.0 / 60.0;
+  if (engineerShip) {
+    engineerShip.position.z += 0.5
+  }
+  if (thingsShip) {
+    thingsShip.position.z += 0.1
+    if (thingsShip.position.z >= 60) {
+      thingsShip.position.x += 0.01
+      thingsShip.rotation.y += 0.001
+    }
+  }
+  if (helicopter) {
+    helicopter.rotation.y += 0.01
+  }
   requestAnimationFrame(initAnimate)
 }
 
@@ -307,13 +324,6 @@ function handleMouseDown(event) {
   var intersects = raycaster.intersectObjects(objectArr)
   // console.log('当前点击的Mash', intersects)
   if (intersects && intersects.length > 0) {
-    if (intersects[0].object.name.indexOf('house') !== -1) {
-      location.href = 'inner.html'
-    }
-    if (intersects[0].object.name.indexOf('plane') !== -1) {
-      model.classList.remove('hide')
-      modelBk.classList.remove('hide')
-    }
   }
 }
 
@@ -328,6 +338,7 @@ function handleMouseMove(event) {
       var obj = intersects[0].object
       infoModal.position.copy(obj.parent.position)
       infoModal.position.z -= 100
+      infoModal.position.y += 10
       infoModal.element.classList.remove('hide')
     } else {
       infoModal.element.classList.add('hide')
